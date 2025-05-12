@@ -1,0 +1,11 @@
+<h1>News</h1>
+<ul>
+    {% for news in newsList %}
+        <li>
+            <a href="{{ path('news_show', { id: news.id }) }}">{{ news.title }}</a>
+            <small>{{ news.createdAt|date('Y-m-d') }}</small>
+        </li>
+    {% else %}
+        <li>No news found.</li>
+    {% endfor %}
+</ul>

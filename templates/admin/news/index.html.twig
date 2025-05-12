@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}News Management{% endblock %}
+
+{% block body %}
+    <h1>News Management</h1>
+
+    <a href="{{ path('admin_news_new') }}">Add New News</a>
+
+    <ul>
+        {% for newsItem in news %}
+            <li>
+                {{ newsItem.title }} -
+                <a href="{{ path('admin_news_show', {id: newsItem.id}) }}">Show</a> -
+                <a href="{{ path('admin_news_edit', {id: newsItem.id}) }}">Edit</a> -
+                <a href="{{ path('admin_news_delete', {id: newsItem.id}) }}"
+                   onclick="return confirm('Are you sure you want to delete this news?')">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

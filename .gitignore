@@ -1,10 +1,35 @@
-
 ###> symfony/framework-bundle ###
-/.env.local
 /.env.local.php
-/.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
+# Symfony directories and files
+/.idea/
+/.vscode/
+/*.log
+/.env.local
+/.env.*.local
 /var/
 /vendor/
+/node_modules/
+/public/bundles/
+
+# Symfony generated files
+/var/cache/
+/var/log/
+/var/sessions/
+
+# PHPUnit output files
+/test-coverage/
+/phpunit-coverage.xml
+
+# IDE/Editor directories and files
+/*.sublime-project
+/*.sublime-workspace
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Composer lock file (optional, if you want to ignore it)
+/composer.lock
+
 ###< symfony/framework-bundle ###
