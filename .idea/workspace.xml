@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="30bcd12f-f7d4-4456-bf8e-e1b96a6947f2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +155,7 @@
       <updated>1747060097503</updated>
       <workItem from="1747060098587" duration="694000" />
       <workItem from="1747060794471" duration="1536000" />
-      <workItem from="1747135226660" duration="16613000" />
+      <workItem from="1747135226660" duration="16710000" />
     </task>
     <servers />
   </component>
