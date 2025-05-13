@@ -11,6 +11,7 @@
 /vendor/
 /node_modules/
 /public/bundles/
+/public/uploads/
 
 # Symfony generated files
 /var/cache/
