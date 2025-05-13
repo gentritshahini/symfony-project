@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/categories.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1>{{ category is defined ? 'Edit Category' : 'Create Category' }}</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">{{ category is defined ? 'Update' : 'Create' }}</button>
+    {{ form_end(form) }}
+{% endblock %}

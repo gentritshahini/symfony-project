@@ -14,10 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/admin/news', name: "admin_news_")]
 class NewsController extends AbstractController
 {
-    #[Route('/admin/news', name: 'admin_news_index')]
-    public function index(Request $request, PaginatorInterface $paginator, ManagerRegistry $doctrine)
+    #[Route('/', name: 'index')]
+    public function index(Request $request, PaginatorInterface $paginator, ManagerRegistry $doctrine): Response
     {
         $queryBuilder = $doctrine->getRepository(News::class)->createQueryBuilder('n');
         $pagination = $paginator->paginate(
@@ -31,7 +32,7 @@ class NewsController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/news/create', name: 'admin_news_create')]
+    #[Route('/create', name: 'create')]
     public function create(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
         $news = new News();
@@ -64,7 +65,7 @@ class NewsController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/news/{id}', name: 'admin_news_show')]
+    #[Route('/{id}', name: 'show')]
     public function show(News $news, EntityManagerInterface $entityManager): Response
     {
         $news->setViews($news->getViews() + 1);
@@ -76,7 +77,7 @@ class NewsController extends AbstractController
     }
 
 
-    #[Route('/admin/news/{id}/edit', name: 'admin_news_edit')]
+    #[Route('/{id}/edit', name: 'edit')]
     public function edit(News $news, Request $request, EntityManagerInterface $entityManager): Response
     {
         $originalPicture = $news->getPicture();
@@ -115,7 +116,7 @@ class NewsController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/news/{id}/delete', name: 'admin_news_delete')]
+    #[Route('/{id}/delete', name: 'delete')]
     public function delete(News $news, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($news);

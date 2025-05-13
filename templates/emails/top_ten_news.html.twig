@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weekly Top 10 News</title>
+</head>
+<body>
+<h1>Weekly Top 10 News</h1>
+<ul>
+    {% for news in newsList %}
+        <li>
+            <strong>{{ news.title }}</strong> - {{ news.views }} views
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

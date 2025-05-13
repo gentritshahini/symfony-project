@@ -59,7 +59,7 @@ class NewsType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'title',
                 'multiple' => true,
-                'expanded' => false,
+                'expanded' => true,
                 'label' => 'Categories',
                 'attr' => ['class' => 'form-control'],
             ]);

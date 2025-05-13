@@ -31,7 +31,23 @@
             <p class="no-news">No news found.</p>
         {% endfor %}
     </div>
-
+    <h1 class="news-heading">Categories</h1>
+    <div class="categories-container">
+        {% for category in categories %}
+            <div class="category">
+                <h2><a href="{{ path('category_news', { id: category.id }) }}">{{ category.title }}</a></h2>
+                <ul>
+                    {% for news in category.news|slice(0, 3) %}
+                        <li>
+                            <a href="{{ path('news_show', { id: news.id }) }}">{{ news.title }}</a>
+                        </li>
+                    {% else %}
+                        <p>No news available for this category.</p>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
     <div class="pagination">
         {{ knp_pagination_render(news) }}
     </div>

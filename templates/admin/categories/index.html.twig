@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/categories.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1>Categories</h1>
+    <div class="add-category-content">
+        <a href="{{ path('admin_categories_create') }}" class="add-category-button">Add New Category</a>
+    </div>
+    <ul>
+        {% for category in categories %}
+            <li>
+                {{ category.title }}
+                <a href="{{ path('admin_categories_edit', { id: category.id }) }}">Edit</a>
+                <a href="{{ path('admin_categories_delete', {id: category.id}) }}" class="btn-action btn-delete"
+                   onclick="return confirm('Are you sure you want to delete this category?')">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

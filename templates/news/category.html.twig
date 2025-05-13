@@ -1,0 +1,30 @@
+{% extends './base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/news.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1 class="news-heading">News in {{ category.title }} Category</h1>
+    <div class="news-container">
+        {% for newsItem in news %}
+            <a href="{{ path('news_show', { id: newsItem.id }) }}" class="news-item">
+                {% if newsItem.picture %}
+                    <div class="news-image">
+                        <img src="{{ asset('uploads/' ~ newsItem.picture) }}" alt="{{ newsItem.title }}">
+                    </div>
+                {% endif %}
+                <div class="news-item-content">
+                    <p class="news-item-title">{{ newsItem.title }}</p>
+                    <p class="news-item-description">{{ newsItem.shortDescription }}</p>
+                    <p class="news-item-date">{{ newsItem.createdAt|date('Y-m-d') }}</p>
+                </div>
+            </a>
+        {% else %}
+            <p class="no-news">No news found in this category.</p>
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        {{ knp_pagination_render(news) }}
+    </div>
+{% endblock %}

@@ -16,6 +16,7 @@
             background-color: #f9f9f9;
             color: #333;
         }
+
         .navbar {
             background-color: #333;
             color: white;
@@ -49,8 +50,14 @@
         <a href="{{ path('homepage') }}">My Website</a>
     </div>
     <div class="links">
-        <a href="{{ path('homepage') }}">News</a>
-        <a href="{{ path('homepage') }}">About</a>
+        {% if app.request.cookies.get('admin_key') %}
+            <a href="{{ path('admin_categories_index') }}">Categories</a>
+        {% endif %}
+        {% if app.request.cookies.get('admin_key') %}
+            <a href="{{ path('admin_news_index') }}">News</a>
+        {% else %}
+            <a href="{{ path('homepage') }}">News</a>
+        {% endif %}
         <a href="{{ path('cookie_toggle') }}">
             {% if app.request.cookies.get('admin_key') %}
                 User LogIn
