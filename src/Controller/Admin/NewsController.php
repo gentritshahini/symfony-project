@@ -4,9 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\News;
 use App\Form\NewsType;
-use App\Repository\NewsRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,24 +17,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class NewsController extends AbstractController
 {
     #[Route('/admin/news', name: 'admin_news_index')]
-    public function index(NewsRepository $newsRepository): Response
+    public function index(Request $request, PaginatorInterface $paginator, ManagerRegistry $doctrine)
     {
-        $news = $newsRepository->findAll();
+        $queryBuilder = $doctrine->getRepository(News::class)->createQueryBuilder('n');
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('admin/news/index.html.twig', [
-            'news' => $news,
+            'news' => $pagination,
         ]);
     }
 
-    #[Route('/admin/news/{id}', name: 'admin_news_show')]
-    public function show(News $news): Response
-    {
-        return $this->render('admin/news/show.html.twig', [
-            'news' => $news,
-        ]);
-    }
-
-    #[Route('/admin/news/new', name: 'admin_news_new')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/admin/news/create', name: 'admin_news_create')]
+    public function create(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
         $news = new News();
         $form = $this->createForm(NewsType::class, $news);
@@ -39,27 +40,72 @@ class NewsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $news->setCreatedAt(new \DateTime());
+            $pictureFile = $form->get('picture')->getData();
+            if ($pictureFile) {
+                $newFilename = uniqid() . '.' . $pictureFile->guessExtension();
+                $pictureFile->move(
+                    $this->getParameter('uploads'),
+                    $newFilename
+                );
+                $news->setPicture($newFilename);
+            }
+
             $entityManager->persist($news);
             $entityManager->flush();
 
             return $this->redirectToRoute('admin_news_index');
         }
 
-        return $this->render('admin/news/new.html.twig', [
+        $categories = $categoryRepository->findAll();
+
+        return $this->render('admin/news/create.html.twig', [
             'form' => $form->createView(),
+            'categories' => $categories,
         ]);
     }
+
+    #[Route('/admin/news/{id}', name: 'admin_news_show')]
+    public function show(News $news, EntityManagerInterface $entityManager): Response
+    {
+        $news->setViews($news->getViews() + 1);
+        $entityManager->flush();
+
+        return $this->render('admin/news/show.html.twig', [
+            'news' => $news,
+        ]);
+    }
+
 
     #[Route('/admin/news/{id}/edit', name: 'admin_news_edit')]
     public function edit(News $news, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(NewsType::class, $news);
+        $originalPicture = $news->getPicture();
+
+        $form = $this->createForm(NewsType::class, $news, [
+            'is_edit' => true,
+        ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $pictureFile = $form->get('picture')->getData();
+
+            if ($pictureFile instanceof File) {
+                $newFilename = uniqid() . '.' . $pictureFile->guessExtension();
+                $pictureFile->move(
+                    $this->getParameter('uploads'),
+                    $newFilename
+                );
+                $news->setPicture($newFilename);
+                if ($originalPicture && file_exists($this->getParameter('uploads') . '/' . $originalPicture)) {
+                    unlink($this->getParameter('uploads') . '/' . $originalPicture);
+                }
+            } else {
+                $news->setPicture($originalPicture);
+            }
+
             $entityManager->flush();
+
             return $this->redirectToRoute('admin_news_index');
         }
 

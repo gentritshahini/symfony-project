@@ -2,20 +2,34 @@
 
 {% block title %}News Management{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/admin_news.css') }}">
+{% endblock %}
+
 {% block body %}
-    <h1>News Management</h1>
+    <div class="news-management-container">
+        <h1 class="page-title">News Management</h1>
 
-    <a href="{{ path('admin_news_new') }}">Add New News</a>
+        <div class="add-news-button">
+            <a href="{{ path('admin_news_create') }}" class="btn-add-news">Add New News</a>
+        </div>
 
-    <ul>
-        {% for newsItem in news %}
-            <li>
-                {{ newsItem.title }} -
-                <a href="{{ path('admin_news_show', {id: newsItem.id}) }}">Show</a> -
-                <a href="{{ path('admin_news_edit', {id: newsItem.id}) }}">Edit</a> -
-                <a href="{{ path('admin_news_delete', {id: newsItem.id}) }}"
-                   onclick="return confirm('Are you sure you want to delete this news?')">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
+        <ul class="news-list">
+            {% for newsItem in news %}
+                <li class="news-item">
+                    <span class="news-title">{{ newsItem.title }}</span>
+                    <div class="news-actions">
+                        <a href="{{ path('admin_news_show', {id: newsItem.id}) }}" class="btn-action">Show</a>
+                        <a href="{{ path('admin_news_edit', {id: newsItem.id}) }}" class="btn-action">Edit</a>
+                        <a href="{{ path('admin_news_delete', {id: newsItem.id}) }}" class="btn-action btn-delete"
+                           onclick="return confirm('Are you sure you want to delete this news?')">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="pagination">
+            {{ knp_pagination_render(news) }}
+        </div>
+    </div>
 {% endblock %}

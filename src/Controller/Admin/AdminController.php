@@ -25,10 +25,10 @@ class AdminController extends AbstractController
 
         if ($cookieValue) {
             $cookie = new Cookie('admin_key', '', time() - 3600, '/', null, false, true);
-            $response = new Response('Admin key cookie removed');
+            $response = $this->redirectToRoute('homepage');
         } else {
             $cookie = new Cookie('admin_key', 'secret-key', time() + 3600, '/', null, false, true);
-            $response = new Response('Admin key cookie set');
+            $response = $this->redirectToRoute('admin_news_index');
         }
 
         $response->headers->setCookie($cookie);

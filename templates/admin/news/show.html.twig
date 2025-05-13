@@ -1,3 +1,61 @@
-<h1>{{ news.title }}</h1>
-<p><em>Published on {{ news.createdAt|date('Y-m-d H:i') }}</em></p>
-<div>{{ news.content }}</div>
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ news.title }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/admin_news.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="news-container">
+        <h1 class="news-title">{{ news.title }}</h1>
+        <p class="news-date"><em>Published on {{ news.createdAt|date('Y-m-d H:i') }}</em></p>
+
+        {% if news.picture %}
+            <div class="news-image">
+                <img src="{{ asset('uploads/' ~ news.picture) }}" alt="{{ news.title }}">
+            </div>
+        {% endif %}
+
+        <p class="news-short-description"><strong>Short Description:</strong> {{ news.shortDescription }}</p>
+        <div class="news-content">
+            <strong>Content:</strong>
+            <p>{{ news.content }}</p>
+        </div>
+
+        <div class="news-categories">
+            <strong>Categories:</strong>
+            {% if news.categories is not empty %}
+                <ul>
+                    {% for category in news.categories %}
+                        <li>{{ category.title }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No categories assigned.</p>
+            {% endif %}
+        </div>
+
+        <p class="news-views"><strong>Views:</strong> {{ news.views }}</p>
+
+        <div class="news-comments">
+            <h2>Comments</h2>
+            {% if news.comments is not empty %}
+                <ul>
+                    {% for comment in news.comments %}
+                        <li>
+                            ({{ comment.createdAt|date('Y-m-d H:i') }}):
+                            {{ comment.content }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No comments yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="back-button">
+            <a href="{{ path('admin_news_index') }}" class="btn-back">Back to News List</a>
+        </div>
+    </div>
+{% endblock %}
