@@ -9,5 +9,8 @@ Then run this command to create the database:
 Then run this command to create the tables:
 ```php bin/console doctrine:schema:update --force```
 
+Then run this command to load the fixtures:
+```php bin/console doctrine:fixtures:load```
+
 Then run this command to start the server:
 ```symfony serve```
